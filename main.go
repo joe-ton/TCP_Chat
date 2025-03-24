@@ -1,13 +1,18 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
+	"encoding/json"
+	"fmt"
+	"net/http"
 )
 
-func main() {
-    resp, err := http.Get("www.google.com")
-    fmt.Println("resp:", resp)
-    fmt.Println("err:", err)
-    
+type RequestData struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+func createResource(w http.ResponseWriter, r *http.Request) {
+    // Guard Clauses
+    // POST check
+    // payload struct check
 }
