@@ -2,11 +2,12 @@ package main
 
 import (
     "fmt"
+    "errors"
     "encoding/json"
     "net/http"
 )
 
-type RequestBody struct {
+type RequestPayload struct {
     Name string `json:"name"`
     Email string `json:"email"`
 }
@@ -14,30 +15,20 @@ type RequestBody struct {
 // handle POST method
 func createResource(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodPost {
-        http.Error(w, "POST only", http.StatusMethodNotAllowed) // 405
+        http.Error(w, "POST only", http.StatusMethodNotAllowed)
         return
     }
 
-    var requestBody RequestBody
-    err := json.NewDecoder(r.Body).Decode(&requestBody)
+    var requestPayload RequestPayload
+    err := json.NewDecoder(r.Body).Decode(&requestPayload)
     if err != nil {
-        http.Error(w, "Invalid JSON Payload", http.StatusBadRequest)
-        return
+        http.Error(w, "Invalid Payload", http.StatusBadRequest)
     }
 
-    defer r.Body.Close() // resource allocation, LIFO/stack, cleanup
+    defer r.Body.Close()
 
-    w.Header().Set("Content-Type", "application/json")
+    w.Header().Set("Content-Type", "applciation/json")
     w.WriteHeader(http.StatusCreated)
 
-    json.NewEncoder(w).Encode(map[string]string{
-        "message": "Resource Created",
-        "name": requestBody.Name,
-        "email": requestBody.Email,
-    })
-}
-
-func main() {
-    http.HandleFunc("/resource", createResource)
-    fmt.Println("Server running on:8080")
+    json.NewEncoder
 }
